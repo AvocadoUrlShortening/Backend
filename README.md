@@ -1,5 +1,5 @@
 ## :sunglasses: Member Contact Information
-
+  
 <table border>
   <tbody>
     <tr>
