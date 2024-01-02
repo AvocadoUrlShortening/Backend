@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  db:
+    container_name: mysql
+    image: mysql:8.0.28
+    restart: on-failure
+    volumes:
+      - /mysql:/var/lib/mysql_db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=mysql_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - TZ=Asia/Seoul
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/mysql_db?serverTimezone=Asia/Seoul
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
