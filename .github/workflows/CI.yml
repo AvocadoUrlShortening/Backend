@@ -37,3 +37,4 @@ jobs:
 
       - name: Test with Gradle
         run: ./gradlew --info test
+        working-directory: ${{ env.working-directory }}
