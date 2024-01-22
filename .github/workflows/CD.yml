@@ -3,7 +3,7 @@ name: Java CD with Gradle
 on:
   push:
     branches:
-      - 'config/issue-004'
+      - 'main'
   pull_request:
     branches:
       - 'main'
