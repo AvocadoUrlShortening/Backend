@@ -33,7 +33,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test #test작성 후 삭제
+        run: ./gradlew clean build
         working-directory: ${{ env.working-directory }}
 
       - name: docker image build
