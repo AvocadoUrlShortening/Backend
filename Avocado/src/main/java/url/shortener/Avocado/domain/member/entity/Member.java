@@ -14,7 +14,6 @@ public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-
     @Column
     private String password;
 
@@ -27,7 +26,6 @@ public class Member {
 
     @Column(nullable = false, unique = true)
     private String email;
-
     @Column
     private String profile;
 

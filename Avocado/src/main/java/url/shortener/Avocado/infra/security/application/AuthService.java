@@ -56,7 +56,6 @@ public class AuthService {
             naverAuthService.getCode();
         } else {
             // throw error
-
         }
     }
     private TokenResponseDto issueToken(Member member) {
