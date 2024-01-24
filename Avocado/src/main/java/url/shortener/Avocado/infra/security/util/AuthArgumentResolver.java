@@ -11,6 +11,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import url.shortener.Avocado.infra.security.annotation.AuthUser;
 import url.shortener.Avocado.infra.security.application.AuthService;
+import url.shortener.Avocado.infra.security.exception.AuthErrorCode;
+import url.shortener.Avocado.infra.security.exception.AuthException;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -39,8 +41,9 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             return authService.getMember(token, refresh);
+        } else {
+            throw new AuthException(AuthErrorCode.TOKEN_EMPTY);
         }
         // request without token 에러
-        return null;
     }
 }

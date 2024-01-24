@@ -7,6 +7,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import url.shortener.Avocado.infra.security.exception.AuthErrorCode;
+import url.shortener.Avocado.infra.security.exception.AuthException;
 
 import java.util.Base64;
 import java.util.Date;
@@ -25,7 +27,15 @@ public class TokenService {
     }
     private final Long ACCESS_EXP = 1800L * 1000; // 30 Miniute, 1000 for milisec
     private final Long REFRESH_EXP = 3 * 3600L * 1000; // 3 hour
+    private final Long VERIFY_EXP = 3 * 1800L * 100; // 3 Miniute
 
+    public String createVerifyToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .signWith(Keys.hmacShaKeyFor(secret))
+                .setExpiration(new Date(System.currentTimeMillis() + VERIFY_EXP))
+                .compact();
+    }
     public String createAccessToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -61,17 +71,20 @@ public class TokenService {
         } catch (io.jsonwebtoken.security.SignatureException e) {
             // 서명이 일치하지 않는 경우
             System.err.println("Invalid signature!");
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             // 토큰이 만료된 경우
             System.err.println("Token has expired!");
+            throw new AuthException(AuthErrorCode.TOKEN_EXPIRED);
         } catch (io.jsonwebtoken.MalformedJwtException e) {
             // 토큰의 형식이 잘못된 경우
             System.err.println("Malformed token!");
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
         } catch (io.jsonwebtoken.UnsupportedJwtException | io.jsonwebtoken.security.SecurityException e) {
             // 지원되지 않는 JWT 형식 또는 보안 예외
             System.err.println("Unsupported JWT or security exception!");
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
         }
-        return false;
     }
 }
 

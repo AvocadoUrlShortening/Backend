@@ -15,6 +15,8 @@ import url.shortener.Avocado.domain.member.entity.Member;
 import url.shortener.Avocado.domain.member.repository.MemberRepository;
 import url.shortener.Avocado.infra.security.dto.response.GoogleInfo;
 import url.shortener.Avocado.infra.security.dto.response.GoogleResponseDto;
+import url.shortener.Avocado.infra.security.exception.AuthErrorCode;
+import url.shortener.Avocado.infra.security.exception.AuthException;
 
 import java.util.Optional;
 
@@ -68,9 +70,11 @@ public class GoogleAuthService {
         if (member.isPresent()) {
             if (member.get().getAuthprovider().equals(AuthProvider.GOOGLE) && member.get().getOAuth2Id().equals(googleInfo.id())) {
                 return member.get();
+            } else {
+                // 이메일은 존재하는데, provider가 google이 아닌 경우
+                throw new AuthException(AuthErrorCode.USER_INVALID);
             }
         }
-        // 새로운 멤버 생성 & 저장
         Member newMember = Member.builder()
                 .email(googleInfo.email())
                 .provider(AuthProvider.GOOGLE)
@@ -82,12 +86,4 @@ public class GoogleAuthService {
         return newMember;
     }
 
-    public void getCode(){
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("response_type", "code");
-        params.add("client_id", clientId);
-        params.add("redirect_tri", redirectUri);
-        params.add("scope", String.join(" ", "profile", "email"));
-        restTemplate.postForEntity(authUri, params, Void.class);
-    }
 }

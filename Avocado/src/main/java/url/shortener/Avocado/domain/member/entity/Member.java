@@ -43,9 +43,7 @@ public class Member {
         this.activated = activated;
     }
 
-//    public Member update(String email, String profile) {
-//        this.email = email;
-//        this.profile = profile;
-//        return this;
-//    }
+    public void update() {
+        this.activated = true;
+    }
 }

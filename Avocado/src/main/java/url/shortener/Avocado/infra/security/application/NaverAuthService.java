@@ -12,9 +12,9 @@ import url.shortener.Avocado.domain.member.entity.Member;
 import url.shortener.Avocado.domain.member.repository.MemberRepository;
 import url.shortener.Avocado.infra.security.dto.response.NaverResponseDto;
 import url.shortener.Avocado.infra.security.dto.response.TokenResponseDto;
+import url.shortener.Avocado.infra.security.exception.AuthErrorCode;
+import url.shortener.Avocado.infra.security.exception.AuthException;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Optional;
 
 
@@ -68,6 +68,8 @@ public class NaverAuthService {
         if (member.isPresent() ) {
             if (member.get().getAuthprovider().equals(AuthProvider.NAVER) && member.get().getOAuth2Id().equals(id)) {
                 return member.get();
+            } else {
+                throw new AuthException(AuthErrorCode.USER_INVALID);
             }
         }
         Member newMember = Member.builder()
@@ -79,16 +81,5 @@ public class NaverAuthService {
                 .build();
         memberRepository.save(newMember);
         return newMember;
-    }
-
-    public void getCode(){
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        SecureRandom rand = new SecureRandom();
-        String state = new BigInteger(130, rand).toString();
-        params.add("response_type", "code");
-        params.add("client_id", clientId);
-        params.add("state", state);
-        params.add("redirect_tri", redirectUri);
-        restTemplate.postForEntity(authUri, params, Void.class);
     }
 }
