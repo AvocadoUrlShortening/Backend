@@ -36,3 +36,5 @@ application-oauth.properties
 
 ### VS Code ###
 .vscode/
+
+**/env.properties
