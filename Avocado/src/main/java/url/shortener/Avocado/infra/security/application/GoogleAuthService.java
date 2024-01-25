@@ -23,20 +23,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class GoogleAuthService {
-    @Value("#{oauth['google.client-id']}")
+
+    @Value("${google.client-id}")
     private String clientId;
 
-    @Value("#{oauth['google.client-secret']}")
+    @Value("${google.client-secret}")
     private String clientSecret;
 
-    @Value("#{oauth['google.authorization-uri']}")
-    private String authUri;
-    @Value("#{oauth['google.redirect-uri']}")
+    @Value("${google.redirect-uri}")
     private String redirectUri;
 
-    @Value("#{oauth['google.token-uri']}")
+    @Value("${google.token-uri}")
     private String tokenEndpoint;
-    @Value("#{oauth['google.user-info-uri']}")
+    @Value("${google.user-info-uri}")
     private String userinfoUri;
 
     private final RestTemplate restTemplate;

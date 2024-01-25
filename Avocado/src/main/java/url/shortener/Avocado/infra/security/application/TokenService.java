@@ -17,7 +17,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class TokenService {
 
-    @Value("#{oauth['secret-key']}")
+    @Value("${secret-key}")
     private String jwtKey;
     private byte[] secret;
 

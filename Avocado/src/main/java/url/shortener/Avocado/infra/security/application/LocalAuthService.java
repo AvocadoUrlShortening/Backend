@@ -1,6 +1,7 @@
 package url.shortener.Avocado.infra.security.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import url.shortener.Avocado.domain.member.entity.AuthProvider;
@@ -12,6 +13,7 @@ import url.shortener.Avocado.infra.security.exception.AuthException;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LocalAuthService {
@@ -19,28 +21,24 @@ public class LocalAuthService {
     private final BCryptPasswordEncoder encoder;
 
     public Member findMember(LoginRequestDto loginRequestDto) {
-        Optional<Member> member = memberRepository.findByEmail(loginRequestDto.email());
-        if(member.isPresent()) {
-            if (member.get().getAuthprovider().equals(AuthProvider.LOCAL)) {
-                if (!member.get().isActivated()) {
-                    // 인증메일 재전송
-                    throw new AuthException(AuthErrorCode.USER_NOT_VERIFIED);
-                } else {
-                    if (verifyMember(member.get(), loginRequestDto.password())) {
-                        return member.get();
-                    } else {
-                        // password 오류
-                        throw new AuthException(AuthErrorCode.PASSWORD_INVALID);
-                    }
-                }
-            } else{
-                // 소셜 로그인 아이디 에러
-                throw new AuthException(AuthErrorCode.OAUTH_USER);
-            }
-        } else {
-            throw new AuthException(AuthErrorCode.USER_NOT_REGISTERD);
-            // 아이디 없음 -> register로 이동
+        Member member = memberRepository.findByEmail(loginRequestDto.email())
+                .orElseThrow(() -> new AuthException(AuthErrorCode.USER_NOT_REGISTERED));
+
+        if (!member.getAuthprovider().equals(AuthProvider.LOCAL)) {
+            throw new AuthException(AuthErrorCode.OAUTH_USER);
         }
+
+        if (!member.isActivated()) {
+            // 인증메일 재전송
+            throw new AuthException(AuthErrorCode.USER_NOT_VERIFIED);
+        }
+
+        if (!checkPassword(member, loginRequestDto.password())) {
+            // password 오류
+            throw new AuthException(AuthErrorCode.PASSWORD_INVALID);
+        }
+
+        return member;
     }
 
     public Member signUp(LoginRequestDto loginRequestDto) {
@@ -50,6 +48,7 @@ public class LocalAuthService {
         } else {
             Member newMember = Member.builder()
                     .email(loginRequestDto.email())
+                    .password(encoder.encode(loginRequestDto.password()))
                     .provider(AuthProvider.LOCAL)
                     .oAuth2Id("")
                     .profile("")
@@ -60,7 +59,7 @@ public class LocalAuthService {
             // email verify
         }
     }
-    public boolean verifyMember(Member member, String password) {
+    public boolean checkPassword(Member member, String password) {
         return encoder.matches(password, member.getPassword());
     }
 

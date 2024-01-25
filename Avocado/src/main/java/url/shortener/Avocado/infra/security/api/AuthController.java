@@ -20,7 +20,7 @@ public class AuthController {
         TokenResponseDto response = authService.login(provider, accessCode);
         ResponseCookie responseCookie = ResponseCookie.from("refreshToken", response.refreshToken())
                 .maxAge(3600) // 1시간
-                .path("/")
+//                .path("/")
                 .httpOnly(true)
 //                .secure(true) https 설정 이후에
                 .build();

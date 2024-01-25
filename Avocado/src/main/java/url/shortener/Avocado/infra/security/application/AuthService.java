@@ -1,7 +1,10 @@
 package url.shortener.Avocado.infra.security.application;
 
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import url.shortener.Avocado.domain.member.entity.Member;
 import url.shortener.Avocado.domain.member.repository.MemberRepository;
 import url.shortener.Avocado.infra.mail.application.EmailService;
@@ -12,6 +15,7 @@ import url.shortener.Avocado.infra.security.exception.AuthException;
 
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -39,14 +43,14 @@ public class AuthService {
             throw new AuthException(AuthErrorCode.PROVIDER_INVALID);
         }
     }
+    public TokenResponseDto login(LoginRequestDto loginRequestDto) {
+        return issueToken(localAuthService.findMember(loginRequestDto));
+    }
 
     public SignUpResponseDto signUp(LoginRequestDto loginRequestDto) {
         return verifyToken(localAuthService.signUp(loginRequestDto));
     }
 
-    public TokenResponseDto login(LoginRequestDto loginRequestDto) {
-        return issueToken(localAuthService.findMember(loginRequestDto));
-    }
 
     private TokenResponseDto issueToken(Member member) {
         String accessToken = tokenService.createAccessToken(member.getEmail());
@@ -61,13 +65,13 @@ public class AuthService {
         return new SignUpResponseDto(token);
     }
 
-    public Member getMember(String accessToken, String refreshToken) {
+    public Member getMember(String accessToken) {
         String email = tokenService.extractEmail(accessToken);
-        String token = checkToken(accessToken, refreshToken, email);
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new AuthException(AuthErrorCode.USER_NOT_FOUND));
     }
 
+    @Transactional
     public TokenResponseDto verifyMember(String token) {
         boolean verified = tokenService.validate(token);
         if (verified) {
@@ -81,8 +85,9 @@ public class AuthService {
         }
     }
 
-    public String checkToken(String accessToken, String refreshToken, String email) {
+    public String checkToken(String accessToken, String refreshToken) {
         if(!tokenService.validate(accessToken)) {
+            String email = tokenService.extractEmail(accessToken);
             if(tokenService.validate(refreshToken)) {
                 // access token만 발급
                 return tokenService.createAccessToken(email);

@@ -15,23 +15,22 @@ import url.shortener.Avocado.infra.security.dto.response.TokenResponseDto;
 import url.shortener.Avocado.infra.security.exception.AuthErrorCode;
 import url.shortener.Avocado.infra.security.exception.AuthException;
 
+import java.util.Objects;
 import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class NaverAuthService {
-    @Value("#{oauth['naver.client-id']}")
+    @Value("${naver.client-id}")
     private String clientId;
-    @Value("#{oauth['naver.client-secret']}")
+    @Value("${naver.client-secret}")
     private String clientSecret;
-    @Value("#{oauth['naver.authorization-uri']}")
-    private String authUri;
-    @Value("#{oauth['naver.redirect-uri']}")
+    @Value("${naver.redirect-uri}")
     private String redirectUri;
-    @Value("#{oauth['naver.token-uri']}")
+    @Value("${naver.token-uri}")
     private String tokenUri;
-    @Value("#{oauth['naver.user-info-uri']}")
+    @Value("${naver.user-info-uri}")
     private String userinfoUri;
     private final RestTemplate restTemplate;
     private final MemberRepository memberRepository;
@@ -47,7 +46,7 @@ public class NaverAuthService {
         requestBody.add("grant_type", "authorization_code");
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
         ResponseEntity<TokenResponseDto> responseEntity = restTemplate.postForEntity(tokenUri, requestEntity, TokenResponseDto.class);
-        return responseEntity.getBody().accessToken();
+        return Objects.requireNonNull(responseEntity.getBody()).accessToken();
     }
     public NaverResponseDto getNaverInfo(String token) {
         HttpHeaders headers = new HttpHeaders();
