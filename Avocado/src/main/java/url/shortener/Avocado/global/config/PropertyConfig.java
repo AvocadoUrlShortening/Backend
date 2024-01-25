@@ -6,7 +6,8 @@ import org.springframework.context.annotation.PropertySources;
 
 @Configuration
 @PropertySources({
-        @PropertySource("classpath:env.properties") // env.properties 파일 소스 등록
+        @PropertySource("classpath:application-env.properties"),
+        @PropertySource("classpath:application-oauth.properties")
 })
 public class PropertyConfig {
 
