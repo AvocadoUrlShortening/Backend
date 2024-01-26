@@ -18,8 +18,8 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-application-oauth.properties
-application-env.properties
+**/oauth.properties
+**/env.properties
 .idea
 *.iws
 *.iml
@@ -38,5 +38,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-**/env.properties
