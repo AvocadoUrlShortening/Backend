@@ -20,6 +20,7 @@ bin/
 ### IntelliJ IDEA ###
 **/oauth.properties
 **/env.properties
+
 .idea
 *.iws
 *.iml
