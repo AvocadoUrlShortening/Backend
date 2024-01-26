@@ -45,7 +45,7 @@ public class Member {
         this.activated = activated;
     }
 
-    public void update() {
+    public void activateMember() {
         this.activated = true;
     }
 }

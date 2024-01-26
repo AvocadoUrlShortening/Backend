@@ -20,13 +20,23 @@ public class AuthController {
         TokenResponseDto response = authService.login(provider, accessCode);
         ResponseCookie responseCookie = ResponseCookie.from("refreshToken", response.refreshToken())
                 .maxAge(3600) // 1시간
-//                .path("/")
+                .path("/")
                 .httpOnly(true)
 //                .secure(true) https 설정 이후에
                 .build();
         return ResponseEntity.ok().headers(headers -> headers.add(HttpHeaders.SET_COOKIE, responseCookie.toString())).body(response);
     }
-
+    @PostMapping("/login/local")
+    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        TokenResponseDto response = authService.login(loginRequestDto);
+        ResponseCookie responseCookie = ResponseCookie.from("refreshToken", response.refreshToken())
+                .maxAge(3600) // 1시간
+                .path("/")
+                .httpOnly(true)
+//                .secure(true)
+                .build();
+        return ResponseEntity.ok().headers(headers -> headers.add(HttpHeaders.SET_COOKIE, responseCookie.toString())).body(response);
+    }
     @PostMapping("/signup")
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody LoginRequestDto loginRequestDto) {
          SignUpResponseDto response = authService.signUp(loginRequestDto);
@@ -39,9 +49,5 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login/local")
-    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        TokenResponseDto response = authService.login(loginRequestDto);
-        return ResponseEntity.ok(response);
-    }
+
 }

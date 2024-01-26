@@ -31,7 +31,6 @@ public class AuthService {
         if (provider.equals("google")) {
             GoogleResponseDto googleResponseDto = googleAuthService.getAccessToken(accessCode);
             GoogleInfo googleInfo = googleAuthService.getGoogleInfo(googleResponseDto.accesToken());
-            System.out.println(googleInfo.email());
             Member member = googleAuthService.getMember(googleInfo);
             return issueToken(member);
         } else if(provider.equals("naver")) {
@@ -78,7 +77,7 @@ public class AuthService {
             String email = tokenService.extractEmail(token);
             Member member = memberRepository.findByEmail(email)
                     .orElseThrow(() -> new AuthException(AuthErrorCode.USER_NOT_FOUND));
-            member.update();
+            member.activateMember();
             return issueToken(member);
         } else {
             throw new AuthException(AuthErrorCode.VERIFY_TOKEN_EXPIRED);
