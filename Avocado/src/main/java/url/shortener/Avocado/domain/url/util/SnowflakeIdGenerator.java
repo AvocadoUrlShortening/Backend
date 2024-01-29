@@ -2,7 +2,9 @@ package url.shortener.Avocado.domain.url.util;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SnowflakeIdGenerator {
     private static final long EPOCH = 1672531200000L; // 2023/01/1 in milli sec
 

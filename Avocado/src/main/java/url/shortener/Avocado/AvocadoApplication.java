@@ -8,10 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @SpringBootApplication(exclude={SecurityAutoConfiguration.class})
 public class AvocadoApplication {
-
 	public static void main(String[] args) {
-
 		SpringApplication.run(AvocadoApplication.class, args);
 	}
-
 }
