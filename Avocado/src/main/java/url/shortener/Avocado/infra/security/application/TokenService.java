@@ -25,9 +25,10 @@ public class TokenService {
     public void init() {
         secret = Base64.getDecoder().decode(jwtKey);
     }
-    private final Long ACCESS_EXP = 1800L * 1000; // 30 Miniute, 1000 for milisec
-    private final Long REFRESH_EXP = 3 * 3600L * 1000; // 3 hour
-    private final Long VERIFY_EXP = 3 * 1800L * 100; // 3 Miniute
+
+    private static final Long ACCESS_EXP = 1800L * 1000; // 30 Miniute, 1000 for milisec
+    private static final Long REFRESH_EXP = 3 * 3600L * 1000; // 3 hour
+    private static final Long VERIFY_EXP = 3000L * 100; // 5 Miniute
 
     public String createVerifyToken(String email) {
         return Jwts.builder()

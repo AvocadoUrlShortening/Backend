@@ -68,7 +68,7 @@ public class NaverAuthService {
             if (member.get().getAuthprovider().equals(AuthProvider.NAVER) && member.get().getOAuth2Id().equals(id)) {
                 return member.get();
             } else {
-                throw new AuthException(AuthErrorCode.USER_INVALID);
+                throw new AuthException(AuthErrorCode.LOCAL_USER);
             }
         }
         Member newMember = Member.builder()

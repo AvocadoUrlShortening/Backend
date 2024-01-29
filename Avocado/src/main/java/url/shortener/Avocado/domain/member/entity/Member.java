@@ -5,16 +5,17 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import url.shortener.Avocado.domain.url.domain.Url;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
 @NoArgsConstructor
 @Entity
 public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String password;
@@ -34,6 +35,9 @@ public class Member {
     @Column
     private boolean activated;
 
+    @OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Url> urls = new ArrayList<>();
+
 
     @Builder
     public Member(String email, String password, AuthProvider provider, String oAuth2Id, String profile, boolean activated) {
@@ -47,5 +51,10 @@ public class Member {
 
     public void activateMember() {
         this.activated = true;
+    }
+
+    public void addUrl(Url url) {
+        urls.add(url);
+        url.updateOwner(this, false);
     }
 }
