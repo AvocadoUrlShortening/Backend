@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SnowflakeIdGenerator {
-    private static final long EPOCH = 1262304000000L;
+    private static final long EPOCH = 1672531200000L;
+//            1262304000000L;
 //            1672531200000L; // 2023/01/1 in milli sec
 
     private static final long NODE_ID_BITS = 2L;

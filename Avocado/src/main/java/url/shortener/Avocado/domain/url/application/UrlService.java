@@ -13,6 +13,8 @@ import url.shortener.Avocado.domain.url.exception.UrlException;
 import url.shortener.Avocado.domain.url.repository.UrlRepository;
 import url.shortener.Avocado.domain.url.util.Base62Util;
 import url.shortener.Avocado.domain.url.util.SnowflakeIdGenerator;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +43,7 @@ public class UrlService {
                 id(id).
                 shortUrl(requestDto.shortUrl()).
                 originalUrl(requestDto.originalUrl()).
+                createdDate(new Date(System.currentTimeMillis())).
                 build();
         url.updateOwner(member, false);
         urlRepository.save(url);
@@ -58,6 +61,7 @@ public class UrlService {
                 id(id).
                 shortUrl(encoded).
                 originalUrl(originalUrl).
+                createdDate(new Date(System.currentTimeMillis())).
                 build();
         url.updateOwner(null, true);
         urlRepository.save(url);
