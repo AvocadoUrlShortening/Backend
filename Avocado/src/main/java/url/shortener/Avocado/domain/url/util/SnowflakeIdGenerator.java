@@ -6,10 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SnowflakeIdGenerator {
-    private static final long EPOCH = 1672531200000L; // 2023/01/1 in milli sec
+    private static final long EPOCH = 1262304000000L;
+//            1672531200000L; // 2023/01/1 in milli sec
 
-    private static final long NODE_ID_BITS = 10L;
-    private static final long SEQUENCE_BITS = 12L;
+    private static final long NODE_ID_BITS = 2L;
+    private static final long SEQUENCE_BITS = 4L;
 
     private static final long MAX_NODE_ID = ~(-1L << NODE_ID_BITS);
     private static final long MAX_SEQUENCE = ~(-1L << SEQUENCE_BITS);
@@ -28,10 +29,10 @@ public class SnowflakeIdGenerator {
         this.nodeId = nodeId;
     }
 
-    public synchronized Long nextId() {
+    public synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
-            throw new IllegalStateException("시스템 시계가 뒤로 가는 경우는 허용되지 않습니다.");
+            throw new IllegalStateException("시스템 시계 오류.");
         }
 
         if (lastTimestamp == timestamp) {

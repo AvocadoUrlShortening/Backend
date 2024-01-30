@@ -4,16 +4,23 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class UrlConnectionChecker {
-    public static boolean isUrlReachable(String urlStr) {
+    public static boolean isUrlReachable(String originalUrl) {
         try {
+            String urlStr = ensureProtocol(originalUrl);
             URL url = new URL(urlStr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
-            // 200 내 코드는 URL이 유효
             return (200 <= responseCode && responseCode <= 399);
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static String ensureProtocol(String urlStr) {
+        if (!urlStr.startsWith("http://") && !urlStr.startsWith("https://")) {
+            return "https://" + urlStr;
+        }
+        return urlStr;
     }
 }

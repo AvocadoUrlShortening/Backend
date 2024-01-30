@@ -10,7 +10,6 @@ public enum UrlErrorCode implements ErrorCode {
     URL_EXIST(HttpStatus.BAD_REQUEST, "E401", "URL Exists"),
     URL_NOT_EXIST(HttpStatus.BAD_REQUEST, "E402", "URL Not Exists"),
     URL_NOT_REACHABLE(HttpStatus.BAD_REQUEST, "E403", "URL Not Reachable");
-
     private final HttpStatus status;
     private final String code;
     private final String message;

@@ -31,6 +31,8 @@ public class Url {
     @JoinColumn(name = "member_id")
     private Member member;
 
+
+
     @Builder
     public Url(Long id, String shortUrl, String originalUrl, Date createdDate) {
         this.id = id;

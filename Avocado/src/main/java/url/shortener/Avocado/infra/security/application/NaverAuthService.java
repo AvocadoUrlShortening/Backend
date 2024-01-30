@@ -53,7 +53,6 @@ public class NaverAuthService {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<?> request = new HttpEntity<>(headers);
         ResponseEntity<NaverResponseDto> response = restTemplate.postForEntity(userinfoUri, request, NaverResponseDto.class);
-
         return response.getBody();
     }
 

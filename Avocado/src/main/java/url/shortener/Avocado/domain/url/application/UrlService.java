@@ -36,7 +36,7 @@ public class UrlService {
         if(urlRepository.existsByShortUrl(requestDto.shortUrl())) {
             throw new UrlException(UrlErrorCode.URL_EXIST);
         }
-        Long id = idGenerator.nextId();
+        long id = idGenerator.nextId();
         Url url = Url.builder().
                 id(id).
                 shortUrl(requestDto.shortUrl()).
@@ -49,7 +49,7 @@ public class UrlService {
     @Transactional
     public String randomUrl(String originalUrl) {
         String encoded;
-        Long id;
+        long id;
         do {
             id = idGenerator.nextId();
             encoded = Base62Util.encode(id);
@@ -69,7 +69,7 @@ public class UrlService {
                 .orElseThrow(() -> new UrlException(UrlErrorCode.URL_NOT_EXIST));
     }
 
-    @Async
+    @Async("statistic")
     public void processHeader(HttpServletRequest request) {
         Map<String, String> headersMap = new HashMap<>();
         headersMap.put("User-Agent", request.getHeader("User-Agent"));

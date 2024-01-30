@@ -20,16 +20,16 @@ public class UrlController {
     private final UrlService urlService;
 
 
-    @PostMapping("/shortner/random")
-    public ResponseEntity<Void> urlShorten(@RequestBody ShortenRequestDto shortenRequestDto) {
+    @PostMapping("/shortener/random")
+    public ResponseEntity<String> urlShorten(@RequestBody ShortenRequestDto shortenRequestDto) {
         if (!UrlConnectionChecker.isUrlReachable(shortenRequestDto.originalUrl())) {
             throw new UrlException(UrlErrorCode.URL_NOT_REACHABLE);
         }
-        urlService.createRandomUrl(shortenRequestDto);
-        return ResponseEntity.noContent().build();
+        String rand = urlService.createRandomUrl(shortenRequestDto);
+        return ResponseEntity.ok(rand);
     }
 
-    @PostMapping("/shortner/custom")
+    @PostMapping("/shortener/custom")
     public ResponseEntity<Void> urlShorten(@AuthUser Member member, @RequestBody ShortenRequestDto shortenRequestDto) {
         if (!UrlConnectionChecker.isUrlReachable(shortenRequestDto.originalUrl())) {
             throw new UrlException(UrlErrorCode.URL_NOT_REACHABLE);

@@ -18,7 +18,7 @@ public class Base62Util {
             encoded.append(BASE62.charAt((int) (id % 62)));
             id /= 62;
         } while (id > 0);
-        return encoded.toString();
+        return encoded.reverse().toString();
     }
 
     public static Long decode(String encoded) {
