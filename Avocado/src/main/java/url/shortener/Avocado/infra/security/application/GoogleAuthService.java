@@ -71,7 +71,7 @@ public class GoogleAuthService {
                 return member.get();
             } else {
                 // 이메일은 존재하는데, provider가 google이 아닌 경우
-                throw new AuthException(AuthErrorCode.USER_INVALID);
+                throw new AuthException(AuthErrorCode.LOCAL_USER);
             }
         }
         Member newMember = Member.builder()

@@ -4,24 +4,22 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum AuthErrorCode {
+public enum AuthErrorCode implements ErrorCode {
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E201", "User Not Found"),
+    USER_NOT_VERIFIED(HttpStatus.UNAUTHORIZED, "E202", "Email Not Verified"),
+    USER_NOT_REGISTERED(HttpStatus.NOT_FOUND, "E203", "User Doesn't Exist"),
+    USER_EXIST(HttpStatus.BAD_REQUEST, "E204", "User Exist"),
+    OAUTH_USER(HttpStatus.BAD_REQUEST, "E205", "OAuth User"),
+    LOCAL_USER(HttpStatus.BAD_REQUEST, "E206", "Local User"),
+    PASSWORD_INVALID(HttpStatus.UNAUTHORIZED, "E207", "Password Invalid"),
+    PROVIDER_INVALID(HttpStatus.BAD_REQUEST, "E208", "Invalid Provider"),
 
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "E201", "Token has Expired"),
-    TOKEN_EMPTY(HttpStatus.UNAUTHORIZED, "E202", "Token is Empty"),
-    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "E203", "Invalid Token"),
-    USER_NOT_VERIFIED(HttpStatus.UNAUTHORIZED, "E204", "Email Not Verified"),
-    PASSWORD_INVALID(HttpStatus.UNAUTHORIZED, "E205", "Password Invalid"),
-    MEMBER_NOT_ACTIVATED(HttpStatus.UNAUTHORIZED, "E206", "Member Not Activated"),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "E301", "Token has Expired"),
+    TOKEN_EMPTY(HttpStatus.UNAUTHORIZED, "E302", "Token is Empty"),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "E303", "Invalid Token"),
+    VERIFY_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "E304", "Password Invalid");
 
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E301", "User Not Found"),
-    PROVIDER_INVALID(HttpStatus.BAD_REQUEST, "E302", "Invalid Provider"),
-    USER_INVALID(HttpStatus.INTERNAL_SERVER_ERROR, "E303", "Corrupt User Data"),
 
-    OAUTH_USER(HttpStatus.BAD_REQUEST, "E304", "OAuth User"),
-    LOCAL_USER(HttpStatus.BAD_REQUEST, "E305", "Local User"),
-    USER_NOT_REGISTERED(HttpStatus.NOT_FOUND, "E306", "User Doesn't Exist"),
-    USER_EXIST(HttpStatus.BAD_REQUEST, "E307", "User Exist"),
-    VERIFY_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "E308", "Password Invalid");
 
     private final HttpStatus status;
     private final String code;

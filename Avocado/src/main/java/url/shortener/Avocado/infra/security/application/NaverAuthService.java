@@ -53,7 +53,6 @@ public class NaverAuthService {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<?> request = new HttpEntity<>(headers);
         ResponseEntity<NaverResponseDto> response = restTemplate.postForEntity(userinfoUri, request, NaverResponseDto.class);
-
         return response.getBody();
     }
 
@@ -68,7 +67,7 @@ public class NaverAuthService {
             if (member.get().getAuthprovider().equals(AuthProvider.NAVER) && member.get().getOAuth2Id().equals(id)) {
                 return member.get();
             } else {
-                throw new AuthException(AuthErrorCode.USER_INVALID);
+                throw new AuthException(AuthErrorCode.LOCAL_USER);
             }
         }
         Member newMember = Member.builder()
