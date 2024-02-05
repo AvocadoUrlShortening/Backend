@@ -41,8 +41,7 @@ public class UrlController {
     @GetMapping("/{shortUrl}")
     public String getOriginalUrl(@PathVariable String shortUrl, HttpServletRequest request) {
         urlService.processHeader(request);
-        Url url = urlService.getUrl(shortUrl);
-        return url.getOriginalUrl();
+        return urlService.getUrl(shortUrl);
     }
 
 }
