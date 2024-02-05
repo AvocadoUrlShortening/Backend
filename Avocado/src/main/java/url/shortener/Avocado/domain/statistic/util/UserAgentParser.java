@@ -1,8 +1,5 @@
 package url.shortener.Avocado.domain.statistic.util;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-
 public class UserAgentParser {
     public static String getDevice(String userAgent) {
         String device = "PC";
