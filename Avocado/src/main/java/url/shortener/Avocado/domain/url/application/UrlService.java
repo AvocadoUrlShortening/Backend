@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import url.shortener.Avocado.domain.member.entity.Member;
+import url.shortener.Avocado.domain.member.domain.Member;
 import url.shortener.Avocado.domain.url.domain.Url;
 import url.shortener.Avocado.domain.url.dto.request.ShortenRequestDto;
 import url.shortener.Avocado.domain.url.exception.UrlErrorCode;
@@ -43,7 +43,6 @@ public class UrlService {
                 id(id).
                 shortUrl(requestDto.shortUrl()).
                 originalUrl(requestDto.originalUrl()).
-                createdDate(new Date(System.currentTimeMillis())).
                 build();
         url.updateOwner(member, false);
         urlRepository.save(url);
@@ -61,7 +60,6 @@ public class UrlService {
                 id(id).
                 shortUrl(encoded).
                 originalUrl(originalUrl).
-                createdDate(new Date(System.currentTimeMillis())).
                 build();
         url.updateOwner(null, true);
         urlRepository.save(url);
@@ -72,18 +70,4 @@ public class UrlService {
         return urlRepository.findByShortUrl(customUrl)
                 .orElseThrow(() -> new UrlException(UrlErrorCode.URL_NOT_EXIST));
     }
-
-    @Async("statistic")
-    public void processHeader(HttpServletRequest request) {
-        Map<String, String> headersMap = new HashMap<>();
-        headersMap.put("User-Agent", request.getHeader("User-Agent"));
-        headersMap.put("Accept-Language", request.getHeader("Accept-Language"));
-        headersMap.put("sec-ch-ua", request.getHeader("sec-ch-ua"));
-        headersMap.put("sec-ch-ua-mobile", request.getHeader("sec-ch-ua-mobile"));
-        headersMap.put("sec-ch-ua-platform", request.getHeader("sec-ch-ua-platform"));
-        headersMap.put("ip", request.getRemoteAddr());
-        // process statistic ~
-    }
-
-
 }
