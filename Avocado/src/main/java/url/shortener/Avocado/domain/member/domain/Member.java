@@ -1,4 +1,4 @@
-package url.shortener.Avocado.domain.member.entity;
+package url.shortener.Avocado.domain.member.domain;
 
 
 import jakarta.persistence.*;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import url.shortener.Avocado.domain.url.domain.Url;
+import url.shortener.Avocado.global.config.entity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Member {
+public class Member extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
@@ -35,7 +36,7 @@ public class Member {
     @Column
     private boolean activated;
 
-    @OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Url> urls = new ArrayList<>();
 
 
@@ -48,6 +49,7 @@ public class Member {
         this.profile = profile;
         this.activated = activated;
     }
+
 
     public void activateMember() {
         this.activated = true;

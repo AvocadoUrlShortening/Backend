@@ -3,7 +3,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import url.shortener.Avocado.domain.member.entity.Member;
+import url.shortener.Avocado.domain.member.domain.Member;
 import url.shortener.Avocado.domain.member.repository.MemberRepository;
 import url.shortener.Avocado.infra.mail.application.EmailService;
 import url.shortener.Avocado.infra.security.dto.request.LoginRequestDto;
@@ -68,7 +68,6 @@ public class AuthService {
                 .orElseThrow(() -> new AuthException(AuthErrorCode.USER_NOT_FOUND));
     }
 
-    @Transactional
     public TokenResponseDto verifyMember(String token) {
         boolean verified = tokenService.validate(token);
         if (verified) {
@@ -76,6 +75,7 @@ public class AuthService {
             Member member = memberRepository.findByEmail(email)
                     .orElseThrow(() -> new AuthException(AuthErrorCode.USER_NOT_FOUND));
             member.activateMember();
+            memberRepository.save(member);
             return issueToken(member);
         } else {
             throw new AuthException(AuthErrorCode.VERIFY_TOKEN_EXPIRED);

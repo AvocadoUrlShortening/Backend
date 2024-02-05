@@ -10,7 +10,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import url.shortener.Avocado.domain.member.entity.Member;
+import url.shortener.Avocado.domain.member.domain.Member;
 import url.shortener.Avocado.infra.security.annotation.AuthUser;
 import url.shortener.Avocado.infra.security.application.AuthService;
 import url.shortener.Avocado.infra.security.exception.AuthErrorCode;

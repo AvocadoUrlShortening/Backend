@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import url.shortener.Avocado.domain.member.entity.Member;
-
-import java.util.Date;
+import url.shortener.Avocado.domain.member.domain.Member;
+import url.shortener.Avocado.domain.statistic.domain.Statistic;
+import url.shortener.Avocado.global.config.entity.BaseEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Url {
+public class Url extends BaseEntity {
 
     private Long id;
 
@@ -24,21 +24,19 @@ public class Url {
 
     private boolean isRandomUrl;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
 
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "url")
+    private Statistic statistic;
 
     @Builder
-    public Url(Long id, String shortUrl, String originalUrl, Date createdDate) {
+    public Url(Long id, String shortUrl, String originalUrl) {
         this.id = id;
         this.shortUrl = shortUrl;
         this.originalUrl = originalUrl;
-        this.createdDate = createdDate;
     }
 
     public void updateOwner(Member member, boolean isRandomUrl) {
@@ -46,5 +44,8 @@ public class Url {
         this.member = member;
     }
 
-
+    public void setStatistic(Statistic statistic) {
+        this.statistic = statistic;
+        statistic.setUrl(this);
+    }
 }
