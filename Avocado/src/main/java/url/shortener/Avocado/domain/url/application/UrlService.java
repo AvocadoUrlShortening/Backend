@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +82,7 @@ public class UrlService {
         urlRepository.save(url);
 
         valueOperations.set(encoded, originalUrl);
+        redisTemplate.expire(encoded,7*60*60*24, TimeUnit.SECONDS);
         return encoded;
     }
 
