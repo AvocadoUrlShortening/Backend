@@ -1,6 +1,5 @@
 package url.shortener.Avocado.domain.statistic.application;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -36,8 +35,8 @@ public class StatisticService {
             url.setStatistic(new Statistic());
         }
         Statistic statistic = url.getStatistic();
-//        String endpoint = geo_url + api_key + "&ip=" + ip + geo_field;
-        String endpoint = geo_url + api_key + "&ip=" + "175.113.145.29" + geo_field;
+        String endpoint = geo_url + api_key + "&ip=" + ip + geo_field;
+//        String endpoint = geo_url + api_key + "&ip=" + "175.113.145.29" + geo_field;
 
         GeoLocationResponse response = restTemplate.getForObject(endpoint, GeoLocationResponse.class);
         String device = UserAgentParser.getDevice(userAgent);
