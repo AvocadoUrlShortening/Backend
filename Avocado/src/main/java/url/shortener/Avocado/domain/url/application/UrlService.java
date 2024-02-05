@@ -46,7 +46,6 @@ public class UrlService {
             throw new UrlException(UrlErrorCode.URL_EXIST);
         }
         if(urlRepository.existsByShortUrl(requestDto.shortUrl())) {
-            valueOperations.set(requestDto.shortUrl(), requestDto.originalUrl());
             throw new UrlException(UrlErrorCode.URL_EXIST);
         }
 
