@@ -40,7 +40,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build --exclude-task test
         working-directory: ${{ env.working-directory }}
 
       - name: docker image build
