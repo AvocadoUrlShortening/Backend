@@ -32,6 +32,13 @@ jobs:
         run: echo ${{ secrets.ENV_PROPERTIES }} > $SECRET_ENV_DIR/$SECRET_ENV_FILENAME
         working-directory: ${{ env.working-directory }}
 
+      - name: Copy secret oauth
+        env:
+          SECRET_OAUTH_DIR: src/main/resources
+          SECRET_OAUTH_FILENAME: oauth.properties
+        run: echo ${{ secrets.OAUTH_PROPERTIES }} > $SECRET_OAUTH_DIR/$SECRET_OAUTH_FILENAME
+        working-directory: ${{ env.working-directory }}
+
       - name: Build with Gradle
         run: ./gradlew clean build
         working-directory: ${{ env.working-directory }}
