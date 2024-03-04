@@ -1,10 +1,11 @@
 package url.shortener.Avocado.domain.url.application;
 
-import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.scheduling.annotation.Async;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import url.shortener.Avocado.domain.member.domain.Member;
@@ -15,9 +16,9 @@ import url.shortener.Avocado.domain.url.exception.UrlException;
 import url.shortener.Avocado.domain.url.repository.UrlRepository;
 import url.shortener.Avocado.domain.url.util.Base62Util;
 import url.shortener.Avocado.domain.url.util.SnowflakeIdGenerator;
+
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
 @Service
 @RequiredArgsConstructor
 public class UrlService {

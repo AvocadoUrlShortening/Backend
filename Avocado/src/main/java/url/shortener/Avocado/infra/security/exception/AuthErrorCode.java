@@ -2,6 +2,7 @@ package url.shortener.Avocado.infra.security.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import url.shortener.Avocado.global.exception.ErrorCode;
 
 @Getter
 public enum AuthErrorCode implements ErrorCode {

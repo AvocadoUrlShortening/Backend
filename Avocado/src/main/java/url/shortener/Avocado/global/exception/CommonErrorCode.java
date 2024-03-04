@@ -1,4 +1,4 @@
-package url.shortener.Avocado.infra.security.exception;
+package url.shortener.Avocado.global.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import url.shortener.Avocado.domain.member.domain.Member;
 import url.shortener.Avocado.domain.statistic.application.StatisticService;
+
 import url.shortener.Avocado.domain.url.application.UrlService;
 import url.shortener.Avocado.domain.url.domain.Url;
 import url.shortener.Avocado.domain.url.dto.request.ShortenRequestDto;
@@ -31,12 +32,12 @@ public class UrlController {
     }
 
     @PostMapping("/shortener/custom")
-    public ResponseEntity<Void> urlShorten(@AuthUser Member member, @RequestBody ShortenRequestDto shortenRequestDto) {
+    public ResponseEntity<String> urlShorten(@AuthUser Member member, @RequestBody ShortenRequestDto shortenRequestDto) {
         if (!UrlConnectionChecker.isUrlReachable(shortenRequestDto.originalUrl())) {
             throw new UrlException(UrlErrorCode.URL_NOT_REACHABLE);
         }
-        urlService.createCustomUrl(member, shortenRequestDto);
-        return ResponseEntity.noContent().build();
+        String shortUrl = urlService.createCustomUrl(member, shortenRequestDto);
+        return ResponseEntity.ok(shortUrl);
     }
 
     @GetMapping("/{shortUrl}")
@@ -46,6 +47,7 @@ public class UrlController {
 //        Url url = urlService.getUrl(shortUrl);
 //        statisticService.processHeader(url, request.getRemoteAddr(), request.getHeader("User-Agent"), request.getHeader("Accept-Language"));
 //        return url.getOriginalUrl();
+
     }
 
 }

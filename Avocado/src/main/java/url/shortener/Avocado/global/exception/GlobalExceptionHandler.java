@@ -1,4 +1,4 @@
-package url.shortener.Avocado.infra.security.exception;
+package url.shortener.Avocado.global.exception;
 
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import url.shortener.Avocado.domain.url.exception.UrlException;
-import url.shortener.Avocado.infra.security.dto.response.ErrorResponseDto;
+import url.shortener.Avocado.infra.security.exception.AuthException;
 
 @RestControllerAdvice
 @Slf4j
@@ -56,4 +56,5 @@ public class GlobalExceptionHandler {
                 .status(CommonErrorCode.INTERNAL_SERVER_ERROR.getStatus().value())
                 .body(new ErrorResponseDto(CommonErrorCode.INTERNAL_SERVER_ERROR));
     }
+
 }

@@ -39,7 +39,6 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Url> urls = new ArrayList<>();
 
-
     @Builder
     public Member(String email, String password, AuthProvider provider, String oAuth2Id, String profile, boolean activated) {
         this.email = email;

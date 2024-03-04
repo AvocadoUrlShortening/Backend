@@ -1,8 +1,7 @@
 package url.shortener.Avocado.infra.security.application;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import url.shortener.Avocado.domain.member.domain.Member;
 import url.shortener.Avocado.domain.member.repository.MemberRepository;
 import url.shortener.Avocado.infra.mail.application.EmailService;
@@ -13,7 +12,7 @@ import url.shortener.Avocado.infra.security.exception.AuthException;
 
 
 
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
