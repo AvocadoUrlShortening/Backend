@@ -49,6 +49,7 @@ public class Member extends BaseEntity {
         this.activated = activated;
     }
 
+
     public void activateMember() {
         this.activated = true;
     }
