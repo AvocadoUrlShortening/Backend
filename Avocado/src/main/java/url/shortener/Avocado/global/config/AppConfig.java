@@ -13,14 +13,13 @@ public class AppConfig {
         return new RestTemplate();
     }
     @Bean(name="statistic")
-    public ThreadPoolTaskExecutor mvcTaskExecutor() {
+    public ThreadPoolTaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(50);
         executor.setQueueCapacity(100);
-        executor.setThreadNamePrefix("header-statistic-");
+        executor.setThreadNamePrefix("Header-Statistic-");
         executor.initialize();
         return executor;
     }
-
 }

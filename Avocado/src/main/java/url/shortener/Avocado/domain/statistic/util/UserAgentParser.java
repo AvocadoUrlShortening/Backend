@@ -2,6 +2,11 @@ package url.shortener.Avocado.domain.statistic.util;
 
 public class UserAgentParser {
     public static String getDevice(String userAgent) {
+        if (userAgent == null) {
+            return "Unknown-Unknown-Unknown";
+        }
+        userAgent = userAgent.toUpperCase();
+
         String device = "PC";
         if (userAgent.contains("MOBILE") || userAgent.contains("MOBI") || userAgent.contains("IPHONE")) {
             device = "MOBILE";
@@ -21,7 +26,6 @@ public class UserAgentParser {
         }
 
         String browser = "Other";
-
         if (userAgent.contains("SAFARI") && userAgent.contains("CHROME")) {
             browser = "Safari";
         } else if (userAgent.contains("CHROME")) {
@@ -35,7 +39,6 @@ public class UserAgentParser {
         } else if (userAgent.contains("FIREFOX")) {
             browser = "Firefox";
         }
-
         return device + "-" + os + "-" + browser;
     }
 }

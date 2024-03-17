@@ -22,7 +22,7 @@ public class AuthController {
                 .maxAge(3600) // 1시간
                 .path("/")
                 .httpOnly(true)
-//                .secure(true) https 설정 이후에
+                .secure(true)
                 .build();
         return ResponseEntity.ok().headers(headers -> headers.add(HttpHeaders.SET_COOKIE, responseCookie.toString())).body(response);
     }
@@ -33,7 +33,7 @@ public class AuthController {
                 .maxAge(3600) // 1시간
                 .path("/")
                 .httpOnly(true)
-//                .secure(true)
+                .secure(true)
                 .build();
         return ResponseEntity.ok().headers(headers -> headers.add(HttpHeaders.SET_COOKIE, responseCookie.toString())).body(response);
     }

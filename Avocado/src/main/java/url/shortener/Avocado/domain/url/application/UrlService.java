@@ -3,9 +3,9 @@ package url.shortener.Avocado.domain.url.application;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import url.shortener.Avocado.domain.member.domain.Member;
@@ -19,6 +19,8 @@ import url.shortener.Avocado.domain.url.util.SnowflakeIdGenerator;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UrlService {
@@ -26,19 +28,20 @@ public class UrlService {
     private final SnowflakeIdGenerator idGenerator;
     private final UrlRepository urlRepository;
     private final RedisTemplate<String, String> redisTemplate;
+    private final ValueOperations<String, String> valueOperations;
 
+    @Transactional
     public String createCustomUrl(Member member, ShortenRequestDto requestDto) {
         return customUrl(member, requestDto);
     }
 
+    @Transactional
     public String createRandomUrl(ShortenRequestDto requestDto) {
         return randomUrl(requestDto.originalUrl());
     }
 
-    @Transactional
-    public String customUrl(Member member, ShortenRequestDto requestDto) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
+    public String customUrl(Member member, ShortenRequestDto requestDto) {
         if (redisTemplate.hasKey(requestDto.shortUrl())) {
             throw new UrlException(UrlErrorCode.URL_EXIST);
         }
@@ -53,14 +56,12 @@ public class UrlService {
                 originalUrl(requestDto.originalUrl()).
                 build();
         url.updateOwner(member, false);
+        member.addUrl(url);
         urlRepository.save(url);
-
         valueOperations.set(requestDto.shortUrl(), requestDto.originalUrl());
         return requestDto.shortUrl();
     }
-    @Transactional
     public String randomUrl(String originalUrl) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String encoded;
         long id;
         do {
@@ -80,14 +81,12 @@ public class UrlService {
         return encoded;
     }
 
-    public String getUrl(String customUrl) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-
-        return Optional.ofNullable(valueOperations.get(customUrl))
+    public String getUrl(String shortUrl) {
+        return Optional.ofNullable(valueOperations.get(shortUrl))
                 .orElseGet(() -> {
-                    Url url = urlRepository.findByShortUrl(customUrl)
+                    Url url = urlRepository.findByShortUrl(shortUrl)
                             .orElseThrow(() -> new UrlException(UrlErrorCode.URL_NOT_EXIST));
-                    valueOperations.set(customUrl, url.getOriginalUrl());
+                    valueOperations.set(shortUrl, url.getOriginalUrl());
                     return url.getOriginalUrl();
                 });
     }

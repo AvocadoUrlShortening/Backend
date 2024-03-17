@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import url.shortener.Avocado.domain.member.domain.Member;
+import url.shortener.Avocado.domain.statistic.domain.Statistic;
 import url.shortener.Avocado.global.config.entity.BaseEntity;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@DynamicUpdate
 @NoArgsConstructor
 public class Url extends BaseEntity {
 
@@ -32,11 +35,9 @@ public class Url extends BaseEntity {
 
     private Long visit = 0L;
 
-    @ElementCollection
-    private List<String> statisticInfo = new ArrayList<>();
-//    @OneToOne(fetch = FetchType.EAGER, mappedBy = "url")
-//    public Statistic statistic;
-//
+    @OneToMany(mappedBy = "url")
+    private List<Statistic> statistics = new ArrayList<>();
+
     @Builder
     public Url(Long id, String shortUrl, String originalUrl) {
         this.id = id;
@@ -49,13 +50,11 @@ public class Url extends BaseEntity {
         this.member = member;
     }
 
-//    public void setStatistic(Statistic statistic) {
-//        this.statistic = statistic;
-//        statistic.setUrl(this);
-//    }
-
-    public void updateStatistic(String info) {
-        visit += 1;
-        statisticInfo.add(info);
+    public void addStatistic(Statistic statistic) {
+        this.statistics.add(statistic);
+        this.visit += 1;
+        if (statistic.getUrl() != this) {
+            statistic.setUrl(this);
+        }
     }
 }
