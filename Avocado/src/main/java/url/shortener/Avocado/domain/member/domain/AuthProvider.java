@@ -1,4 +1,4 @@
-package url.shortener.Avocado.domain.member.entity;
+package url.shortener.Avocado.domain.member.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package url.shortener.Avocado.infra.security.exception;
+package url.shortener.Avocado.global.exception;
 
 public interface ErrorCode {
     String getCode();
